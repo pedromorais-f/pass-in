@@ -6,17 +6,28 @@ from src.models.entities.events import Events
 class EventsRepository:
     
     #Method to insert a Event in the database
-    def insert_event(self, eventsInfo:Dict) -> Dict:
+    def insert_event(self, events_info:Dict) -> Dict:
         #Creating the insertion of the Event
         with connection_handler as db_connection:
             event = Events(
-                id = eventsInfo.get('uuid'),
-                title = eventsInfo.get('title'),
-                details = eventsInfo.get('details'),
-                slug = eventsInfo.get('slug'),
-                maximum_attendees = eventsInfo.get('maximum_attendees') 
+                id = events_info.get('uuid'),
+                title = events_info.get('title'),
+                details = events_info.get('details'),
+                slug = events_info.get('slug'),
+                maximum_attendees = events_info.get('maximum_attendees') 
             )
-            db_connection.session.add(event)
-            db_connection.session.commit()
+            session = db_connection.get_session()
+            session.add(event)
+            session.commit()
 
-            return eventsInfo
+            return events_info
+        
+    def get_event_by_id(self, event_id: str) -> Events:
+        #Creating a query to get a event by the primary key which is the id
+        with connection_handler as db_connection:
+            session = db_connection.get_session()
+
+            event = session.query(Events).filter(Events.id == event_id).one()
+
+            return event
+

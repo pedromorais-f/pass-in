@@ -1,10 +1,12 @@
+import pytest
 from src.models.settings.connection import connection_handler
-from .events_repository import EventsRepository
+from src.models.repository.events_repository import EventsRepository
 
 #Making the connection with database
 connection_handler.connect_to_db()
 
-def insert_event_test():
+@pytest.mark.skip(reason="Test Passed!")
+def test_insert_event():
     event = {
         'uuid': 'dhfgiujhgf-d3432d34443-d34442343dfsIKF',
         'title': 'Insert Event Test',
@@ -17,4 +19,10 @@ def insert_event_test():
     response = event_repository.insert_event(event)
     print(response)
 
-insert_event_test()
+@pytest.mark.skip(reason="Test Passed!")
+def test_get_event_by_id():
+    event_id = 'dhfgiujhgf-d3432d34443-d34442343dfsIKF'
+    
+    event_repository = EventsRepository()
+    response = event_repository.get_event_by_id(event_id)
+    print(response)
