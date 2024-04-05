@@ -6,7 +6,7 @@ class DBConnectionHandler:
     def __init__(self, database, dbfile) -> None:
         self.__string_connection = f"{database}:///{dbfile}" #Path to connect with database
         self.__engine = None #Variable that will make the connection
-        self.__session = None #Variable to enter in database
+        self.session = None #Variable to enter in database
 
     #Method to get the engine
     def get_engine(self):
@@ -18,16 +18,12 @@ class DBConnectionHandler:
 
     #Method to enter in database
     def __enter__(self):
-        self.__session = sessionmaker(bind=self.__engine)
+        self.session = sessionmaker(bind=self.__engine)
         return self
     
     #Method to close the session
-    def __exit__(self):
-        self.__session.close()
-
-    #Method to get the session
-    def get_session(self):
-        return self.__session
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.session.close()
 
 
 #Create the Connection Handler for database

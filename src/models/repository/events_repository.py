@@ -6,7 +6,8 @@ from src.models.entities.events import Events
 class EventsRepository:
     
     #Method to insert a Event in the database
-    def insert_event(eventsInfo:Dict) -> Dict:
+    def insert_event(self, eventsInfo:Dict) -> Dict:
+        #Creating the insertion of the Event
         with connection_handler as db_connection:
             event = Events(
                 id = eventsInfo.get('uuid'),
@@ -15,8 +16,7 @@ class EventsRepository:
                 slug = eventsInfo.get('slug'),
                 maximum_attendees = eventsInfo.get('maximum_attendees') 
             )
-            db_session = db_connection.get_session()
-            db_session.add(event)
-            db_session.commit()
+            db_connection.session.add(event)
+            db_connection.session.commit()
 
             return eventsInfo
