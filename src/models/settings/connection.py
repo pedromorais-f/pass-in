@@ -24,3 +24,13 @@ class DBConnectionHandler:
     #Method to close the session
     def __exit__(self):
         self.__session.close()
+
+    #Method to get the session
+    def get_session(self):
+        return self.__session
+
+
+#Create the Connection Handler for database
+database = "sqlite"
+db_file = "storage.db"
+connection_handler = DBConnectionHandler(database, db_file)
