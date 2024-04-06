@@ -33,7 +33,7 @@ class AttendeesRepository:
                 raise exception
         
     def get_attendee_by_id(self, attendee_id: str) -> Attendees:
-        #Creating a query to get a attendee by the primary key which is the id of the event
+        #Creating a query to get a attendee by the foreign key which is the id of the event
         with connection_handler as db_connection:
             try:
                 session = db_connection.get_session

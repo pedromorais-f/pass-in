@@ -6,9 +6,9 @@ from sqlalchemy.sql import func
 class CheckIns(Base):
     __tablename__ = "check_ins"
 
-    id = Column(Integer, nullable=False, primary_key=True, autoincrement=True) #Column for Id
+    id = Column(Integer, nullable=False, primary_key=True) #Column for Id
     created_at = Column(DateTime, nullable=False, default=func.now()) #Column for date
-    attendee_id = Column(String, nullable=False) #Column for attendeeId
+    attendeeId = Column(String, ForeignKey("attendees.id"), nullable=False) #Column for attendeeId
 
     def __repr__(self):
-        return f"[Check_Ins id={self.id}, created_at={self.created_at}, attendeeId={self.attendee_id}"
+        return f"[Check_Ins id={self.id}, created_at={self.created_at}, attendeeId={self.attendeeId}"
