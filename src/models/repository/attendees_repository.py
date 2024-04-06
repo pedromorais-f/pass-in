@@ -23,9 +23,11 @@ class AttendeesRepository:
                 session.commit()
 
                 return attendees_info
+            #Create a exception if the attendee already had been signed up
             except IntegrityError:
                 raise Exception('Attendee already signed up')
 
+            #General exception to return the database to a safe record
             except Exception as exception:
                 session.rollback()
                 raise exception
@@ -44,6 +46,7 @@ class AttendeesRepository:
                             )
 
                 return attendee
+            #Exception in case that attendee Id had not been found
             except NoResultFound:
                 return None
 

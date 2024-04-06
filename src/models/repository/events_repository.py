@@ -23,9 +23,11 @@ class EventsRepository:
                 session.commit()
 
                 return events_info
+            #Exception in case that event already had been signed up
             except IntegrityError:
                 raise Exception('Event already signed up')
 
+            #General exception that will return the database to the last state
             except Exception as exception:
                 session.rollback()
                 raise exception
@@ -39,6 +41,7 @@ class EventsRepository:
                 event = session.query(Events).filter(Events.id == event_id).one()
 
                 return event
+            #Exceptioon in case the event id had not been found
             except NoResultFound:
                 return None
 
