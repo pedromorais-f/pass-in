@@ -9,6 +9,7 @@ class DBConnectionHandler:
         self.__session = None #Variable to enter in database
 
     #Method to get the engine
+    @property
     def get_engine(self):
         return self.__engine
     
@@ -27,6 +28,7 @@ class DBConnectionHandler:
         self.__session.close()
 
     #Method to get the session
+    @property
     def get_session(self):
         return self.__session
 
