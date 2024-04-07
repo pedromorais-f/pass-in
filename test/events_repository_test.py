@@ -22,8 +22,16 @@ def test_insert_event():
 
 @pytest.mark.skip(reason="Test Passed!")
 def test_get_event_by_id():
-    event_id = 'dhfgiujhgf-d3432d34443-d34442343dfsIKF12'
+    event_id = 'dhfgiujhgf-d3432d34443-d34442343dfsIKF'
     
     event_repository = EventsRepository()
     response = event_repository.get_event_by_id(event_id)
+    print(response)
+
+@pytest.mark.skip(reason="Test Passed!")
+def test_count_event_attendees():
+    event_id = 'dhfgiujhgf-d3432d34443-d34442343dfsIKF1'
+
+    event_repository = EventsRepository()
+    response = event_repository.count_event_attendees(event_id)
     print(response)
