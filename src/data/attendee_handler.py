@@ -46,3 +46,14 @@ class AttendeeHandler:
             }, status_code=200)
         except Exception:
             raise Exception('The attendee was not found!')
+        
+    def find_attnedees_from_event(self, http_request: HttpRequest) -> HttpResponse:
+        event_id = http_request.get_param["event_id"]
+        try:
+            attendees = self.__attendees_repository.get_attendees_by_event_id(event_id)
+
+            return HttpResponse(body={"attendees": attendees}, status_code=200)
+        except Exception:
+            raise Exception('This event do not have attendees')
+
+

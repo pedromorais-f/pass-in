@@ -1,13 +1,14 @@
-from typing import Dict
+from typing import Dict, List
 from src.models.settings.connection import connection_handler
 from src.models.entities.attendees import Attendees
 from src.models.entities.events import Events
+from src.models.entities.check_ins import CheckIns
 from sqlalchemy.exc import IntegrityError, NoResultFound
 
 #Class that will make actions in the database
 class AttendeesRepository:
     
-    #Method to insert a Attendee in the database
+    #Method to insert an Attendee in the database
     def insert_attendee(self, attendees_info:Dict) -> Dict:
         #Creating the insertion of the Attendee
         with connection_handler as db_connection:
@@ -33,7 +34,7 @@ class AttendeesRepository:
                 raise exception
         
     def get_attendee_by_id(self, attendee_id: str) -> Attendees:
-        #Creating a query to get a attendee by the foreign key which is the id of the event
+        #Creating a query to get an attendee by the foreign key which is the id of the event
         with connection_handler as db_connection:
             try:
                 session = db_connection.get_session
@@ -49,4 +50,32 @@ class AttendeesRepository:
             #Exception in case that attendee Id had not been found
             except NoResultFound:
                 raise Exception('The attendee was not found!')
+            
+    def get_attendees_by_event_id(self, event_id: str) -> List[Dict]:
+        #Creating a query to get attendees by the foreign key which is the id of the event
+        with connection_handler as db_connection:
+            session = db_connection.get_session
+
+            #Using outerjoin method to return all the attendees
+            attendees = (session.query(Attendees)
+                        .outerjoin(CheckIns, CheckIns.attendeeId == Attendees.id)
+                        .filter(Attendees.event_id == event_id)
+                        .with_entities(Attendees.id, Attendees.name, Attendees.email, CheckIns.created_at.label('checked_in_at'))
+                        .all()             
+            )
+
+            formatted_attendees = []
+            for attendee in attendees:
+                formatted_attendees.append(
+                    {
+                        "id": attendee.id,
+                        "name": attendee.name,
+                        "email": attendee.email,
+                        "check_in_at": attendee.checked_in_at
+                    }
+                )
+            if len(formatted_attendees) == 0: 
+                raise Exception('The event do not exist')
+            
+            return formatted_attendees
 

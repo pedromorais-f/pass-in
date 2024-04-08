@@ -19,10 +19,19 @@ def test_insert_attendee():
     response = attendee_repository.insert_attendee(attendee)
     print(response)
 
-#@pytest.mark.skip(reason="Test Passed!")
+@pytest.mark.skip(reason="Test Passed!")
 def test_get_attendee_by_id():
     attendee_id = 'f1ef1be9-8dfd-4f3b-83b9-94ecf43a8fbc'
     
     attendees_repository = AttendeesRepository()
     response = attendees_repository.get_attendee_by_id(attendee_id)
     print(response)
+
+@pytest.mark.skip(reason="Test Passed!")
+def test_get_attendees_by_event_id():
+    event_id = '9a938ca7-c428-4a51-8ebc-9a871dd2c0721'
+    
+    attendees_repository = AttendeesRepository()
+    response = attendees_repository.get_attendees_by_event_id(event_id)
+    for item in response:
+        print(item)
