@@ -2,6 +2,7 @@ from src.models.repository.events_repository import EventsRepository
 from src.http_types.http_request import HttpRequest
 from src.http_types.http_response import HttpResponse
 import uuid
+from src.errors.errors_types.http_not_found import HttpNotFound
 
 #Class to handle with events requests and responses
 class EventHandler:
@@ -38,7 +39,7 @@ class EventHandler:
                 }
             }, status_code= 201)
         except Exception:
-            raise Exception('Event was not found')
+            raise HttpNotFound('Event was not found')
 
 
 

@@ -3,6 +3,8 @@ from src.http_types.http_request import HttpRequest
 from src.http_types.http_response import HttpResponse
 import uuid
 from src.models.repository.attendees_repository import AttendeesRepository
+from src.errors.errors_types.http_conflict import HttpConflict
+from src.errors.errors_types.http_not_found import HttpNotFound
 
 #Class to handle with registry of attendees in some event
 class AttendeeHandler:
@@ -16,7 +18,7 @@ class AttendeeHandler:
         try:
             event = self.__events_repository.get_event_by_id(event_id)
         except Exception:
-            raise Exception('This event not exist!')
+            raise HttpNotFound('This event not exist!')
         
         body['uuid'] = str(uuid.uuid4())
 
@@ -24,7 +26,7 @@ class AttendeeHandler:
 
         event_counter = self.__events_repository.count_event_attendees(event_id)
         if(event_counter['maximumAttendees'] != 0 and event_counter['maximumAttendees'] == event_counter['attendeesAmount']):
-            raise Exception('Sold Out')
+            raise HttpConflict('Sold Out')
         
         body['event_id'] = event_id
         self.__attendees_repository.insert_attendee(body)
@@ -45,7 +47,7 @@ class AttendeeHandler:
                 }
             }, status_code=200)
         except Exception:
-            raise Exception('The attendee was not found!')
+            raise HttpNotFound('The attendee was not found!')
         
     def find_attnedees_from_event(self, http_request: HttpRequest) -> HttpResponse:
         event_id = http_request.get_param["event_id"]
@@ -54,6 +56,6 @@ class AttendeeHandler:
 
             return HttpResponse(body={"attendees": attendees}, status_code=200)
         except Exception:
-            raise Exception('This event do not have attendees')
+            raise HttpNotFound('This event do not have attendees')
 
 

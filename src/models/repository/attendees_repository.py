@@ -4,6 +4,8 @@ from src.models.entities.attendees import Attendees
 from src.models.entities.events import Events
 from src.models.entities.check_ins import CheckIns
 from sqlalchemy.exc import IntegrityError, NoResultFound
+from src.errors.errors_types.http_conflict import HttpConflict
+from src.errors.errors_types.http_not_found import HttpNotFound
 
 #Class that will make actions in the database
 class AttendeesRepository:
@@ -26,7 +28,7 @@ class AttendeesRepository:
                 return attendees_info
             #Create a exception if the attendee already had been signed up
             except IntegrityError:
-                raise Exception('Attendee already signed up')
+                raise HttpConflict('Attendee already signed up')
 
             #General exception to return the database to a safe record
             except Exception as exception:
@@ -49,7 +51,7 @@ class AttendeesRepository:
                 return attendee
             #Exception in case that attendee Id had not been found
             except NoResultFound:
-                raise Exception('The attendee was not found!')
+                raise HttpNotFound('The attendee was not found!')
             
     def get_attendees_by_event_id(self, event_id: str) -> List[Dict]:
         #Creating a query to get attendees by the foreign key which is the id of the event
@@ -75,7 +77,7 @@ class AttendeesRepository:
                     }
                 )
             if len(formatted_attendees) == 0: 
-                raise Exception('The event do not exist')
+                raise HttpConflict('The event do not exist')
             
             return formatted_attendees
 

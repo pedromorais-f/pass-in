@@ -1,8 +1,7 @@
 from src.models.settings.connection import connection_handler
-from src.models.entities.attendees import Attendees
-from src.models.entities.events import Events
 from src.models.entities.check_ins import CheckIns
-from sqlalchemy.exc import IntegrityError, NoResultFound
+from sqlalchemy.exc import IntegrityError
+from src.errors.errors_types.http_conflict import HttpConflict
 
 
 #Class that will make actions in the database
@@ -23,28 +22,9 @@ class CheckInsRepository:
                 return attendee_id_info
             #Create a exception if the check in already had been signed up
             except IntegrityError:
-                raise Exception('Check in already signed up')
+                raise HttpConflict('Check in already signed up')
 
             #General exception to return the database to a safe record
             except Exception as exception:
                 session.rollback()
                 raise exception
-            
-    def get_check_in_by_id(self, attendee_id_info: str) -> CheckIns:
-        #Creating a query to get a check in by the foreign key which is attendee id 
-        with connection_handler as db_connection:
-            try:
-                session = db_connection.get_session
-
-                check_in = (session.query(CheckIns)
-                            .join(Attendees, Attendees.id == CheckIns.attendeeId)
-                            .join(Events, Events.id == Attendees.event_id)
-                            .filter(CheckIns.attendeeId == attendee_id_info)
-                            .with_entities(CheckIns.attendeeId, Attendees.name, Attendees.email, Events.title)
-                            .one()
-                            )
-
-                return check_in
-            #Exception in case that attendee Id had not been found
-            except NoResultFound:
-                return None

@@ -3,6 +3,8 @@ from src.models.settings.connection import connection_handler
 from src.models.entities.events import Events
 from src.models.entities.attendees import Attendees
 from sqlalchemy.exc import IntegrityError, NoResultFound
+from src.errors.errors_types.http_conflict import HttpConflict
+from src.errors.errors_types.http_not_found import HttpNotFound
 
 #Class that will make actions in the database
 class EventsRepository:
@@ -26,7 +28,7 @@ class EventsRepository:
                 return events_info
             #Exception in case that event already had been signed up
             except IntegrityError:
-                raise Exception('Event already signed up')
+                raise HttpConflict('Event already signed up')
 
             #General exception that will return the database to the last state
             except Exception as exception:
@@ -45,7 +47,7 @@ class EventsRepository:
                 return event
             #Exceptioon in case the event id had not been found
             except NoResultFound:
-                raise Exception('EventId was not found')
+                raise HttpNotFound('EventId was not found')
 
     def count_event_attendees(self, event_id: str) -> Dict:
         try:
