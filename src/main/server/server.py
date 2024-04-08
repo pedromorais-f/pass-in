@@ -12,7 +12,9 @@ connection_handler.connect_to_db()
 app = Flask(__name__)
 CORS(app)
 
-#Registering a event route for the application
+#Registering an event route for the application
 app.register_blueprint(event_route_bp)
+#Registering an attendee route for the application
 app.register_blueprint(attendee_route_bp)
+#Registering a check in route for the application
 app.register_blueprint(check_in_route_bp)

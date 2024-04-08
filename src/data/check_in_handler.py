@@ -9,6 +9,7 @@ class CheckInHandler:
         self.__check_in_repository = CheckInsRepository()
         self.__attendees_repository = AttendeesRepository()
     
+    #Method to do an attendee`s check in
     def register(self, http_request: HttpRequest) -> HttpResponse:
         check_in_info = http_request.get_param["attendee_id_info"]
         try:

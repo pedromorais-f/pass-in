@@ -12,6 +12,7 @@ class AttendeeHandler:
         self.__attendees_repository = AttendeesRepository()
         self.__events_repository = EventsRepository()
 
+    #Method to register an attendee
     def register(self, http_request: HttpRequest) -> HttpResponse:
         body = http_request.get_body
         event_id = http_request.get_param["event_id"]
@@ -33,6 +34,7 @@ class AttendeeHandler:
 
         return HttpResponse(body={'attendee_id': body['uuid'], 'event_title': event.title }, status_code=201)
     
+    #Method to find a attendee badge in the database
     def find_attendee_badge(self, http_request: HttpRequest) -> HttpResponse:
         attendee_id = http_request.get_param["attendee_id"]
 
@@ -49,6 +51,7 @@ class AttendeeHandler:
         except Exception:
             raise HttpNotFound('The attendee was not found!')
         
+    #Method to list all the attendees in a event
     def find_attnedees_from_event(self, http_request: HttpRequest) -> HttpResponse:
         event_id = http_request.get_param["event_id"]
         try:

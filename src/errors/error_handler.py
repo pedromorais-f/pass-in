@@ -2,6 +2,7 @@ from src.http_types.http_response import HttpResponse
 from .errors_types.http_conflict import HttpConflict
 from .errors_types.http_not_found import HttpNotFound
 
+#Function to handler all the errors in a better format
 def error_handler(error: Exception) -> HttpResponse:
     if isinstance(error, (HttpConflict, HttpNotFound)):
         return HttpResponse(
