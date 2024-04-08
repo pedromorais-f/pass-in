@@ -15,6 +15,7 @@ def create_event():
 
     return jsonify(http_response.get_body), http_response.get_status_code
 
+#GET Method to return data requests
 @event_route_bp.route("/events/<event_id>", methods=["GET"])
 def get_event(event_id):
     http_request = HttpRequest(param={"event_id": event_id})

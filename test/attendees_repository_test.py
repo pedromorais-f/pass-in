@@ -19,9 +19,9 @@ def test_insert_attendee():
     response = attendee_repository.insert_attendee(attendee)
     print(response)
 
-@pytest.mark.skip(reason="Test Passed!")
+#@pytest.mark.skip(reason="Test Passed!")
 def test_get_attendee_by_id():
-    attendee_id = 'bbbbbbb-bbbbbb-bbbbbb-bbbbbbbb1'
+    attendee_id = 'f1ef1be9-8dfd-4f3b-83b9-94ecf43a8fbc'
     
     attendees_repository = AttendeesRepository()
     response = attendees_repository.get_attendee_by_id(attendee_id)

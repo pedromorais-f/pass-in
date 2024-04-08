@@ -41,12 +41,12 @@ class AttendeesRepository:
                 attendee = (session.query(Attendees)
                             .join(Events, Events.id == Attendees.event_id)
                             .filter(Attendees.id == attendee_id)
-                            .with_entities(Attendees.name, Attendees.email, Events.title)
+                            .with_entities(Attendees.name, Attendees.id, Events.title)
                             .one()
                             )
 
                 return attendee
             #Exception in case that attendee Id had not been found
             except NoResultFound:
-                return None
+                raise Exception('The attendee was not found!')
 
