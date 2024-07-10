@@ -16,4 +16,4 @@ SQLAlchemy==2.0.28
 tomli==2.0.1
 typing-extensions==4.10.0
 werkzeug==3.0.1
-zipp==3.18.1
+zipp==3.19.1
